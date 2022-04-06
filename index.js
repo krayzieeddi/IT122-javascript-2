@@ -1,4 +1,4 @@
-const http = require("http"); // assigns the http protocole to http var
+import http from 'http'; // assigns the http protocole to http var
 
 http.createServer((req,res) => {
     var path = req.url.toLowerCase(); // the url itself
@@ -6,7 +6,7 @@ http.createServer((req,res) => {
     switch(path) { // this switch case will redirect depending on url
         case '/':
             res.writeHead(200, {'Content-Type': 'text/plain'});
-            res.end('Home page info');
+            res.end('Home page info stuff');
             break;
         case '/about':
             res.writeHead(200, {'Content-Type': 'text/plain'});

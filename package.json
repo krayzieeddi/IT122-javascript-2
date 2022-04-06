@@ -1,0 +1,24 @@
+{
+  "name": "it122",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "IT125 package",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krayzieeddi/IT122-javascript-2.git"
+  },
+  "author": "Edwin Ho",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/krayzieeddi/IT122-javascript-2/issues"
+  },
+  "homepage": "https://github.com/krayzieeddi/IT122-javascript-2#readme",
+  "dependencies": {
+    "nodemon": "^2.0.15"
+  }
+}

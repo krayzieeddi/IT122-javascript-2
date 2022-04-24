@@ -1,12 +1,13 @@
 <html>
     <body>
         <a href="/">Home</a>
-<% if (result) { %>
-    <h2><%= title %> details</h2>
-    <li>Author: <%= result.author %></li>
-    <li>Pub. date: <%= result.pubdate %></li>
+<% if (card) { %>
+    <h2><%= card.cardName %></h2>
+    <li>Mana Cost : <%= card.manaCost %></li>
+    <li>Attack Stat: <%= card.attackStat %></li>
+    <li>Defense Stat: <%= card.defStat %></li>
 <% } else { %>
-        <h2><%= title %> not found</h2>
+        <h2><%= card.cardName %> not found</h2>
 <% } %>
 
     </body>

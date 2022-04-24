@@ -9,7 +9,7 @@ const app = express();
 
 app.set("port", process.env.PORT || 3000); // sets the port to 3000
 app.use(express.static('./')); // allows direct navigation to static files
-app.use(express.urlencoded()); //Parse URL-encoded bodies
+app.use(express.urlencoded()); //Parse URL-encoded bodies -- use the .query method for the request object
 app.use(express.json()); //Used to parse JSON bodies
 
 // set the view engine to ejs template engine
@@ -25,14 +25,20 @@ app.get('/about', (req,res) => {
     res.render('about');
 });
 
-// find cards route ----------------------------------------------------
+//  card detail view route ----------------------------------------------------
 app.get('/detail', (req,res) => {
     res.type('text/html');
-    // console.log(req.query);
-    res.end("detail page " + req.query.name); // req.query returns js object with key refer to url
+    console.log(findCard(req.query.name));
+    res.render('details', {card : findCard(req.query.name)}); // req.query returns js object from url detail?name=blah
 });
 
-//  same function as get detail route different syntax
+// app.get('/detail', (req,res) => {
+//     res.type('text/html');
+//     // console.log(req.query);
+//     res.end("detail page " + req.query.name); // req.query returns js object from url detail?name=blah
+// });
+
+//  same function as get detail route above but different syntax
 // app.get('/user(name)?', (req,res) => {
 //     res.end( 'thing ' + req.query.name);
 // });

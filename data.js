@@ -11,5 +11,8 @@ export const getAllCards = () => {
 }
 
 export const findCard = (url) => {
-        return JSON.stringify(cards.find(element => element.cardName === url.name));      
+        // return cards.find(element => element.cardName === url.name);
+        // return JSON.stringify(cards.find(element => element.cardName === url)); 
+        return cards.find(element => element.cardName === url);  // returns the object literal     
+     
 }

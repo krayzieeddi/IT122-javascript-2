@@ -1,6 +1,6 @@
 "use strict"
 
-import { getAllCards, findCard, cards } from './data.js'; // import all exported items from data.js
+import { getAllCards, findCard } from './data.js'; // import all exported items from data.js
 import express from 'express';
 // import routes from './routes.js';
 
@@ -17,7 +17,7 @@ app.set("view engine", "ejs");
 
 // send content of home.ejs from view folder to browser
 app.get('/', (req,res) => {
-    res.render('home', {cards: (cards)}); // passes the home ejs and cards object as parameters 
+    res.render('home', {cards: (getAllCards())}); // passes the home ejs and cards object as parameters 
 });
    
    // about ejs page
@@ -28,7 +28,7 @@ app.get('/about', (req,res) => {
 //  card detail view route ----------------------------------------------------
 app.get('/detail', (req,res) => {
     res.type('text/html');
-    console.log(findCard(req.query.name));
+    // console.log(findCard(req.query.name));
     res.render('details', {card : findCard(req.query.name)}); // req.query returns js object from url detail?name=blah
 });
 

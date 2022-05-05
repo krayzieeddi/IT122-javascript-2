@@ -1,3 +1,6 @@
 # type the folder or file name in this file to ignore when commiting to repo
 node_modules
 x.js
+eslint index js.JPG
+credentials.js
+testdb.js

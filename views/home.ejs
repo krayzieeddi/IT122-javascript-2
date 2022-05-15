@@ -1,0 +1,7 @@
+<h2>Home</h2>
+<hr>
+<h3>Cards</h3>
+
+<% cards.forEach((card) => { %>
+    <li><a href="/detail?name=<%= card.cardName %>"> <%= card.cardName %></li>
+  <% }); %>

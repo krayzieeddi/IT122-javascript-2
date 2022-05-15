@@ -1,0 +1,14 @@
+<html>
+    <body>
+        <a href="/">Home</a>
+<% if (card) { %>
+    <h2><%= card.cardName %></h2>
+    <li>Mana Cost : <%= card.manaCost %></li>
+    <li>Attack Stat: <%= card.attackStat %></li>
+    <li>Defense Stat: <%= card.defStat %></li>
+<% } else { %>
+        <h2><%= card.cardName %> not found</h2>
+<% } %>
+
+    </body>
+</html>

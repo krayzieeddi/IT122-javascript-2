@@ -4,11 +4,15 @@
 import { Card } from "./models/Cards.js";
 import express from 'express';
 import cors from 'cors';
+import { response } from "express";
+// import res from "express/lib/response";
+
 
 // import routes from './routes.js';
 
 // const app_routes = routes(app); // passes ‘app’ instance to the routes module
 const app = express();
+
 
 app.set("port", process.env.PORT || 3000); // sets the port to 3000
 app.use(express.static('./')); // allows direct navigation to static files
@@ -34,7 +38,7 @@ app.get('/about', (req,res) => {
 });
 
 //  card detail view route ----------------------------------------------------
-app.get('/detail', (req,res,next) => {
+app.get('/api/detail', (req,res,next) => {
     // db query can use request parameters
     Card.findOne({ cardName:req.query.name }).lean()
         .then((card) => {
@@ -42,6 +46,27 @@ app.get('/detail', (req,res,next) => {
         })
         .catch(err => next(err));
 });
+
+// route to delete something using new url syntax
+app.get('/api/delete/:name' , (req,res) => {
+    Card.deleteOne( {cardName: req.params.name}, () => { // needs anonymous function to work for some reason
+        res.send(req.params.name + " successfully deleted!"); // need to use params for new colon url syntax
+    }); 
+});
+
+// add card object into mongodb using the url as stat entry
+app.get('/api/add/:name/:mana/:attack/:defense', (req,res) => {
+    const newCard = {'cardName':req.params.name, 'manaCost':req.params.mana, 'attackStat': req.params.attack, 'defStat': req.params.defense}
+
+    Card.updateOne({'cardName':req.params.name}, newCard, {upsert:true}, (err, result) => {
+        if (err) return next(err);
+        console.log(result);
+        res.send( req.params.name + "card added");
+    });
+});
+
+// fetch('/api/add/')
+//     .then((req,res) => res.send(req.params.name));
 
 
 // app.get('/detail', (req,res) => {

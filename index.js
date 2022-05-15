@@ -3,6 +3,7 @@
 // import { getAllCards, findCard } from './data.js'; // import all exported items from data.js
 import { Card } from "./models/Cards.js";
 import express from 'express';
+import cors from 'cors';
 
 // import routes from './routes.js';
 
@@ -13,6 +14,7 @@ app.set("port", process.env.PORT || 3000); // sets the port to 3000
 app.use(express.static('./')); // allows direct navigation to static files
 app.use(express.urlencoded()); //Parse URL-encoded bodies -- use the .query method for the request object
 app.use(express.json()); //Used to parse JSON bodies
+app.use('/api', cors()); // set Access-Control-Allow-Origin header for api route
 
 // set the view engine to ejs template engine
 app.set("view engine", "ejs");

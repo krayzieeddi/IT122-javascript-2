@@ -55,13 +55,13 @@ app.get('/api/delete/:name' , (req,res) => {
 });
 
 // add card object into mongodb using the url as stat entry
-app.get('/api/add/:name/:mana/:attack/:defense', (req,res) => {
-    const newCard = {'cardName':req.params.name, 'manaCost':req.params.mana, 'attackStat': req.params.attack, 'defStat': req.params.defense}
+app.post('/api/add', (req,res) => {
+    const newCard = {'cardName':req.body.name, 'manaCost':req.body.mana, 'attackStat': req.body.attack, 'defStat': req.body.defense}
 
-    Card.updateOne({'cardName':req.params.name}, newCard, {upsert:true}, (err, result) => {
+    Card.updateOne({'cardName':req.body.name}, newCard, {upsert:true}, (err, result) => {
         if (err) return next(err);
         console.log(result);
-        res.send( req.params.name + "card added");
+        res.send( req.body.name + " card added");
     });
 });
 

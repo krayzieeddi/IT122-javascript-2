@@ -27,9 +27,8 @@ app.set("view engine", "ejs");
 app.get('/', (req,res) => {
     Card.find({}).lean()
   .then((cards) => {
-    res.render('home', { cards });
+    res.render('home', { cards : JSON.stringify(cards) });
   })
-  .catch(err => next(err));
 });
    
    // about ejs page

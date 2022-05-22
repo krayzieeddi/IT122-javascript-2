@@ -1,7 +1,62 @@
-<h2>Home</h2>
-<hr>
-<h3>Cards</h3>
 
-<% cards.forEach((card) => { %>
-    <li><a href="/api/detail?name=<%= card.cardName %>"> <%= card.cardName %></li>
-  <% }); %>
+  <head>
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+
+      .title {color: red;}
+
+    </style>
+
+  </head>
+
+  <body>
+  
+    <div id="root"></div>
+    <script type="text/babel">
+    
+      class App extends React.Component {
+        constructor(props) {
+          let cards = <%- cards %>
+          console.log(cards);
+          super(props);
+          this.state = {cards: 'cardName'};
+        }
+        render(){
+          return 
+            <div>{this.state.cards}
+            </div>
+          
+        }
+      }
+
+
+      // const greeting = <h1 className="title">Hello, Stranger</h1>; // use className for css to acknowledge it
+      const greeting = <h1>Hello, Stranger</h1>; // use css within script
+
+
+      const MyApp = (props) => { // what will be rendered will be in this MyApp function
+        
+        if (props.name) {
+          
+          return <span>
+                  <h1>Hello, {props.name}!</h1>
+                </span>;
+        }
+        else {
+          return greeting;
+        }
+      } // end of MyApp function
+
+      const container = document.getElementById('root'); // container gets div with id of root
+      const root = ReactDOM.createRoot(container); // root creates the container as the root DOM
+      root.render(<App  />); // the user is passing the parameter in function
+
+    </script>
+   
+  </body>

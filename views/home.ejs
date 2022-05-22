@@ -20,32 +20,21 @@
     <div id="root"></div>
     <script type="text/babel">
     
-      class App extends React.Component {
-        constructor(props) {
-          let cards = <%- cards %>
-          console.log(cards);
-          super(props);
-          this.state = {cards: 'cardName'};
-        }
-        render(){
-          return 
-            <div>{this.state.cards}
-            </div>
-          
-        }
-      }
-
-
       // const greeting = <h1 className="title">Hello, Stranger</h1>; // use className for css to acknowledge it
       const greeting = <h1>Hello, Stranger</h1>; // use css within script
 
-
+      const cards = <%- cards %>;
+      const cardList = cards.map((card) => <li key={card}><a href="/api/detail?name=<%= card.cardName %>">{card.cardName}</a></li>);
+    
       const MyApp = (props) => { // what will be rendered will be in this MyApp function
+
+        console.log(cards);
         
         if (props.name) {
           
           return <span>
                   <h1>Hello, {props.name}!</h1>
+                  {cardList}
                 </span>;
         }
         else {
@@ -55,7 +44,7 @@
 
       const container = document.getElementById('root'); // container gets div with id of root
       const root = ReactDOM.createRoot(container); // root creates the container as the root DOM
-      root.render(<App  />); // the user is passing the parameter in function
+      root.render(<MyApp name="user"  />); // the user is passing the parameter in function
 
     </script>
    

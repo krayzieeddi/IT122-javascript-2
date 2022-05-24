@@ -24,7 +24,7 @@
       const greeting = <h1>Hello, Stranger</h1>; // use css within script
 
       const cards = <%- cards %>;
-      const cardList = cards.map((card) => <li key={card}><a href="/api/detail?name=<%= card.cardName %>">{card.cardName}</a></li>);
+      const cardList = cards.map((card) => <li key={card}><a href={`/api/detail?name=${card.cardName}`}>{card.cardName}</a></li>);
     
       const MyApp = (props) => { // what will be rendered will be in this MyApp function
 

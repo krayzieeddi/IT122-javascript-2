@@ -1,4 +1,4 @@
-
+<html>
   <head>
     <title>Hello World</title>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -20,32 +20,100 @@
     <div id="root"></div>
     <script type="text/babel">
     
-      // const greeting = <h1 className="title">Hello, Stranger</h1>; // use className for css to acknowledge it
-      const greeting = <h1>Hello, Stranger</h1>; // use css within script
-
-      const cards = <%- cards %>;
-      const cardList = cards.map((card) => <li key={card}><a href={`/api/detail?name=${card.cardName}`}>{card.cardName}</a></li>);
+      // const cards = <%- cards %>;
+      // const cardList = cards.map((card) => <li key={card}><a href={`/api/detail?name=${card.cardName}`}>{card.cardName}</a></li>);
     
-      const MyApp = (props) => { // what will be rendered will be in this MyApp function
+      // const MyApp = (props) => { // what will be rendered will be in this MyApp function
 
-        console.log(cards);
+      //   console.log(cards);
         
-        if (props.name) {
+      //   if (props.name) {
           
-          return <span>
-                  <h1>Hello, {props.name}!</h1>
-                  {cardList}
-                </span>;
-        }
-        else {
-          return greeting;
-        }
-      } // end of MyApp function
+      //     return <span>
+      //             <h1>Hello, {props.name}!</h1>
+      //             {cardList}
+      //           </span>;
+      //   }
+      //   else {
+      //     return <h1>Hello, Stranger</h1>;
+      //   }
+      // } // end of MyApp function
 
-      const container = document.getElementById('root'); // container gets div with id of root
-      const root = ReactDOM.createRoot(container); // root creates the container as the root DOM
-      root.render(<MyApp name="user"  />); // the user is passing the parameter in function
+      const Cards = (props) => { // props is an array
+        const cardList = props.data.map((card) => 
+        <li key={card._id} id={card._id} onClick={props.clickHandler}>
+          {card.cardName}
+        </li>);
+
+        return <ul>{cardList}</ul>;
+      }
+
+      const CardDetail = (props) => {
+        return <div>Detail<hr/>
+
+          <form>
+            Card Name: <input type="text" name="name" onChange={props.onChange} value={props.item.cardName || ""}  /> <br/>
+            Mana cost: <input type="text" name="mana" onChange={props.onChange} value={props.item.manaCost || ""} /> <br/>
+          </form>
+
+          <button name="clear" onClick={props.clear}>Clear</button>
+
+          </div>;
+      }
+
+      class MyApp extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            items: <%- cards %>,
+            currentItem: {}
+          };
+        } // end of constructor
+
+        showDetail = (event)  => { // on click function to populate the current item object for the state
+          let name = event.target.innerText; // gets the name of card that you clicked on
+          let newCard = this.state.items.find((item) => item.cardName == name); // finds card object in array in class constructor state
+          this.setState({"currentItem": newCard}); // assigns the current item in this.state with new thing
+        }
+
+        fieldChange = (event) => {
+          let newItem = this.state.currentItem;
+          console.log(event.target.value);
+          newItem[event.target.name] = event.target.value;
+          this.setState({"currentItem": newItem});
+        }
+
+        clear = (event) => {
+          this.setState({"currentItem": {}}); // resets the fields to nothing
+        }
+
+        render() { // render method that will display the whole html page
+          return (<div>  
+                    <h2>Card Inventory</h2>
+                    <Cards data={this.state.items} clickHandler={this.showDetail} />
+
+                    <CardDetail 
+                      item={this.state.currentItem}
+                      onChange={this.fieldChange} 
+                      clear={this.clear}
+                    />
+          
+                </div>);
+        } // end of render
+
+      } // end of MyApp class 
+
+      // const container = document.getElementById('root'); // container gets div with id of root
+      // const root = ReactDOM.createRoot(container); // root creates the container as the root DOM
+      ReactDOM.render(
+        <div><MyApp  /></div>,
+
+      document.getElementById('root')
+        
+      ); // the user is passing the parameter in function
 
     </script>
    
   </body>
+
+</html>

@@ -48,12 +48,14 @@
         return <ul>{cardList}</ul>;
       }
 
-      const CardDetail = (props) => {
+      const CardDetail = (props) => { // card detail info display -- field name must be same as props.item.stuff
         return <div>Detail<hr/>
 
           <form>
-            Card Name: <input type="text" name="name" onChange={props.onChange} value={props.item.cardName || ""}  /> <br/>
-            Mana cost: <input type="text" name="mana" onChange={props.onChange} value={props.item.manaCost || ""} /> <br/>
+            Card Name: <input type="text" name="cardName" onChange={props.handleChange} value={props.item.cardName || ""}  /> <br/>
+            Mana cost: <input type="text" name="manaCost" onChange={props.handleChange} value={props.item.manaCost || ""} /> <br/>
+            Attack stat: <input type="text" name="attackStat" onChange={props.handleChange} value={props.item.attackStat || ""} /> <br/>
+            Defense stat: <input type="text" name="defStat" onChange={props.handleChange} value={props.item.defStat || ""} /> <br/>
           </form>
 
           <button name="clear" onClick={props.clear}>Clear</button>
@@ -68,6 +70,9 @@
             items: <%- cards %>,
             currentItem: {}
           };
+
+          this.fieldChange = this.fieldChange.bind(this);
+          this.clear = this.clear.bind(this);
         } // end of constructor
 
         showDetail = (event)  => { // on click function to populate the current item object for the state
@@ -78,9 +83,8 @@
 
         fieldChange = (event) => {
           let newItem = this.state.currentItem;
-          console.log(event.target.value);
           newItem[event.target.name] = event.target.value;
-          this.setState({"currentItem": newItem});
+          this.setState({currentItem: newItem})
         }
 
         clear = (event) => {
@@ -94,7 +98,7 @@
 
                     <CardDetail 
                       item={this.state.currentItem}
-                      onChange={this.fieldChange} 
+                      handleChange={this.fieldChange} 
                       clear={this.clear}
                     />
           

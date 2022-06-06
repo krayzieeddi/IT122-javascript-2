@@ -48,24 +48,30 @@ app.get('/api/detail', (req,res,next) => {
 
 // route to delete something using new url syntax
 app.get('/api/delete/:name' , (req,res) => {
-    Card.deleteOne( {cardName: req.params.name}, () => { // needs anonymous function to work for some reason
+    Card.deleteOne( {"cardName": req.params.name}, () => { // needs anonymous function to work for some reason
         res.send(req.params.name + " successfully deleted!"); // need to use params for new colon url syntax
     }); 
 });
 
 // add card object into mongodb using the url as stat entry
 app.post('/api/add', (req,res) => {
-    const newCard = {'cardName':req.body.name, 'manaCost':req.body.mana, 'attackStat': req.body.attack, 'defStat': req.body.defense}
+    const newCard = {'cardName':req.body.cardName, 'manaCost':req.body.manaCost, 'attackStat': req.body.attackStat, 'defStat': req.body.defStat}
 
-    Card.updateOne({'cardName':req.body.name}, newCard, {upsert:true}, (err, result) => {
-        if (err) return next(err);
-        console.log(result);
-        res.send( req.body.name + " card added");
-    });
-});
+    if (req.body._id == null) { // insert new document
+        let card = new Card(req.body);
+        card.save((err,newCard) => {
+            if (err) return console.error(err);
+            res.json({updated: 0, _id: newCard._id});
+        });
+    }
 
-// fetch('/api/add/')
-//     .then((req,res) => res.send(req.params.name));
+    Card.updateOne({'_id':req.body._id}, newCard, {upsert:true}, (err, result) => {
+            if (err) return next(err);
+            console.log(result);
+            res.send( req.body.name + " card added");
+        });
+
+}); // end of add route
 
 
 // app.get('/detail', (req,res) => {

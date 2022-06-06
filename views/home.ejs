@@ -48,7 +48,7 @@
         return <ul>{cardList}</ul>;
       }
 
-      const CardDetail = (props) => { // card detail info display -- field name must be same as props.item.stuff
+      const CardDetail = (props) => { // card detail info display -- field input name must be same as props.item.(insert name)
         return <div>Detail<hr/>
 
           <form>
@@ -58,7 +58,11 @@
             Defense stat: <input type="text" name="defStat" onChange={props.handleChange} value={props.item.defStat || ""} /> <br/>
           </form>
 
-          <button name="clear" onClick={props.clear}>Clear</button>
+          <button name="clear" onClick={props.clear}>Clear</button>&nbsp;
+
+          <button name="save" onClick={props.saveItem}>Save</button>&nbsp;
+
+          <button name="delete" onClick={props.deleteItem}>Delete</button>&nbsp;
 
           </div>;
       }
@@ -71,25 +75,67 @@
             currentItem: {}
           };
 
+          this.showDetail = this.showDetail.bind(this);
           this.fieldChange = this.fieldChange.bind(this);
           this.clear = this.clear.bind(this);
+          this.saveItem = this.saveItem.bind(this);
+          this.deleteItem = this.deleteItem.bind(this);
         } // end of constructor
 
         showDetail = (event)  => { // on click function to populate the current item object for the state
           let name = event.target.innerText; // gets the name of card that you clicked on
           let newCard = this.state.items.find((item) => item.cardName == name); // finds card object in array in class constructor state
           this.setState({"currentItem": newCard}); // assigns the current item in this.state with new thing
-        }
+        } // end of showDetail
 
         fieldChange = (event) => {
           let newItem = this.state.currentItem;
           newItem[event.target.name] = event.target.value;
           this.setState({currentItem: newItem})
-        }
+        } // end of fieldChange
 
-        clear = (event) => {
+        clear = () => {
           this.setState({"currentItem": {}}); // resets the fields to nothing
-        }
+        } // end of clear
+
+        saveItem = () => { // save edits
+          console.log(this.state.currentItem);
+          
+          if (this.state.currentItem == {}) return
+
+          let newItem = this.state.currentItem;
+
+            fetch("/api/add", { // using the broswer built-in fetch method to access routes in the index.js
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newItem)
+            })
+              .then(res => res.json())
+              .then((json) => {
+                console.log(json) 
+
+                // if its a new item then add to the list
+                if (!this.state.currentItem._id) {
+                  newItem._id = json._id;
+                  let newList = this.state.items;
+                  newList.push(newItem);
+                  this.setState({items : newList});
+                }
+
+              });
+          
+        } // end of saveItem
+
+        deleteItem = () => {
+          console.log(this.state.currentItem);
+
+          if (this.state.currentItem == {}) return
+
+          fetch(`/api/delete/${this.state.currentItem.cardName}`)
+            .then(res => res.json())
+            .then((json) => { console.log(json) });
+            
+        } // end of deleteItem
 
         render() { // render method that will display the whole html page
           return (<div>  
@@ -100,6 +146,8 @@
                       item={this.state.currentItem}
                       handleChange={this.fieldChange} 
                       clear={this.clear}
+                      saveItem={this.saveItem}
+                      deleteItem={this.deleteItem}
                     />
           
                 </div>);

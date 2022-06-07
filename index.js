@@ -57,15 +57,15 @@ app.get('/api/delete/:name' , (req,res) => {
 app.post('/api/add', (req,res) => {
     const newCard = {'cardName':req.body.cardName, 'manaCost':req.body.manaCost, 'attackStat': req.body.attackStat, 'defStat': req.body.defStat}
 
-    if (req.body._id == null) { // insert new document
-        let card = new Card(req.body);
-        card.save((err,newCard) => {
-            if (err) return console.error(err);
-            res.json({updated: 0, _id: newCard._id});
-        });
-    }
+    // if (req.body._id == null) { // insert new document
+    //     let card = new Card(req.body);
+    //     card.save((err,newCard) => {
+    //         if (err) return console.error(err);
+    //         res.json({updated: 0, _id: newCard._id});
+    //     });
+    // }
 
-    Card.updateOne({'_id':req.body._id}, newCard, {upsert:true}, (err, result) => {
+    Card.updateOne({'cardName':req.body.cardName}, newCard, {upsert:true}, (err, result) => {
             if (err) return next(err);
             console.log(result);
             res.send( req.body.name + " card added");
